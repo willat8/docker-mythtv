@@ -5,7 +5,7 @@ RUN apt-get update && \
 
 RUN apt-get install -y mythtv-backend
 
-RUN apt-get install -y locales && \
+RUN apt-get install -y locales iputils-ping && \
     locale-gen "en_AU.UTF-8" && \
     dpkg-reconfigure --frontend=noninteractive locales && \
     ln -sfv /usr/share/zoneinfo/Australia/Sydney /etc/localtime
