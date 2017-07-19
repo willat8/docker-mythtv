@@ -13,5 +13,5 @@ RUN apt-get install -y locales iputils-ping && \
 ENV LC_ALL=en_AU.UTF-8 \
     LANG=en_AU.UTF-8
 
-CMD mythbackend
+ENTRYPOINT ["mythbackend"]
 
