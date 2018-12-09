@@ -1,12 +1,11 @@
 FROM ubuntu:devel
 
-RUN apt-get update && \
-    apt-get upgrade -y
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    locales iputils-ping mythtv-backend \
+ && rm -rf /var/lib/apt/lists/*
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mythtv-backend
-
-RUN apt-get install -y locales iputils-ping && \
-    locale-gen "en_AU.UTF-8" && \
+RUN locale-gen "en_AU.UTF-8" && \
     dpkg-reconfigure --frontend=noninteractive locales && \
     ln -sfv /usr/share/zoneinfo/Australia/Sydney /etc/localtime
 
