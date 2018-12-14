@@ -2,7 +2,7 @@ FROM ubuntu:devel
 
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    locales iputils-ping mythtv-backend \
+    locales iputils-ping mythtv-backend libhdhomerun4 \
  && rm -rf /var/lib/apt/lists/*
 
 RUN locale-gen "en_AU.UTF-8" && \
