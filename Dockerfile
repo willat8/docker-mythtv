@@ -2,7 +2,7 @@ FROM ubuntu:bionic
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends software-properties-common \
- && add-apt-repository -y ppa:mythbuntu/30 \
+ && add-apt-repository -y ppa:mythbuntu/29 \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     locales iputils-ping mythtv-backend libhdhomerun4 \
  && rm -rf /var/lib/apt/lists/*
