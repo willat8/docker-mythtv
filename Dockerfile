@@ -2,7 +2,7 @@ FROM ubuntu:bionic
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends software-properties-common \
- && add-apt-repository -y ppa:mythbuntu/0.29 \
+ && add-apt-repository -y ppa:mythbuntu/30 \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     locales tzdata iputils-ping mythtv-backend libhdhomerun4 libmyth-python \
  && rm -rf /var/lib/apt/lists/*
