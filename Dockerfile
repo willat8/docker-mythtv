@@ -1,7 +1,7 @@
 FROM ubuntu:groovy
 
 RUN apt-get update \
- && apt-get install -y --no-install-recommends software-properties-common \
+ && apt-get install -y --no-install-recommends software-properties-common gpg-agent \
  && add-apt-repository -y ppa:mythbuntu/32 \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     locales tzdata iputils-ping mythtv-backend libhdhomerun4 libmyth-python x11-utils \
