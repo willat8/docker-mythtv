@@ -1,4 +1,4 @@
-FROM ubuntu:groovy
+FROM ubuntu:hirsute
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends software-properties-common gpg-agent \
