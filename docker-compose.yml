@@ -57,8 +57,13 @@ services:
 
 volumes:
   mythtvconfig:
+    external: true
   mythtvhome:
+    external: true
   mariadbsock:
+    external: true
   mythconverg:
+    external: true
   shepherd_output:
+    external: true
 
