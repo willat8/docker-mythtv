@@ -1,0 +1,63 @@
+version: '3.9'
+
+services:
+  mythtv:
+    image: willat8/mythtv:20210121
+    container_name: mythtv
+    restart: always
+    volumes:
+      - type: volume
+        source: mythtvconfig
+        target: /etc/mythtv
+      - type: volume
+        source: mythtvhome
+        target: /root/.mythtv
+      - type: volume
+        source: mariadbsock
+        target: /var/run/mysqld
+        volume:
+          nocopy: true
+      - type: volume
+        source: shepherd_output
+        target: /shepherd_output
+        volume:
+          nocopy: true
+        read_only: true
+      - "/mnt/mythtvzpool:/mnt/storage"
+    network_mode: host
+    depends_on:
+      - mariadb
+      - shepherd
+
+  mariadb:
+    image: mariadb:10.3
+    container_name: mariadb
+    restart: always
+    volumes:
+      - type: volume
+        source: mariadbsock
+        target: /var/run/mysqld
+      - "mythconverg:/var/lib/mysql"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mythconverg
+      MYSQL_USER: mythtv
+      MYSQL_PASSWORD: mythtv
+
+  shepherd:
+    image: willat8/shepherd
+    container_name: shepherd
+    restart: always
+    volumes:
+      - type: volume
+        source: shepherd_output
+        target: /shepherd_output
+
+volumes:
+  mythtvconfig:
+  mythtvhome:
+  mariadbsock:
+  shepherd_output:
+
