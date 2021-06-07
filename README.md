@@ -1,4 +1,4 @@
-> &#x26a0;&#xfe0f;: The included `docker-compose.yml` is intended for use with Rancher OS only
+> &#x26a0;&#xfe0f; The included `docker-compose.yml` is intended for use with Rancher OS only
 
 Run `mythtv-setup` in an `ssh -X` session with
 
