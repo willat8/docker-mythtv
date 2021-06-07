@@ -1,69 +1,52 @@
-version: '3.9'
+zfs-healthcheck:
+  image: zfs-tools
+  restart: always
+  privileged: yes
+  pid: host
+  net: host
+  ipc: host
+  volumes:
+    - /mnt:/mnt:shared
+    - /media:/media:shared
+    - /dev:/host/dev
+    - /run:/run
+  entrypoint: ["python", "-c"]
+  command: ["import subprocess, BaseHTTPServer; BaseHTTPServer.HTTPServer(('', 80), type('handler', (BaseHTTPServer.BaseHTTPRequestHandler, object), {'do_GET': lambda s: (s.send_response(200), s.send_header('Content-Type', 'text/plain'), s.end_headers(), s.wfile.write(subprocess.check_output(['zpool', 'status', '-x'])))})).serve_forever()"]
+  labels:
+    io.rancher.os.scope: system
+    io.rancher.os.after: mythtv
 
-services:
-  mythtv:
-    image: willat8/mythtv:20210601
-    container_name: mythtv
-    restart: always
-    volumes:
-      - type: volume
-        source: mythtvconfig
-        target: /etc/mythtv
-      - type: volume
-        source: mythtvhome
-        target: /root/.mythtv
-      - type: volume
-        source: mariadbsock
-        target: /var/run/mysqld
-        volume:
-          nocopy: true
-      - type: volume
-        source: shepherd_output
-        target: /shepherd_output
-        volume:
-          nocopy: true
-        read_only: true
-      - "/mnt/mythtvzpool:/mnt/storage"
-    network_mode: host
-    depends_on:
-      - mariadb
-      - shepherd
+mythtv:
+  image: willat8/mythtv:20210601
+  restart: always
+  volumes_from:
+    - mariadb
+    - shepherd
+  volumes:
+    - "mythtvconfig:/etc/mythtv"
+    - "mythtvhome:/root/.mythtv"
+    - "/mnt/mythtvzpool:/mnt/storage"
+  net: host
+  labels:
+    io.rancher.os.after: mariadb,shepherd
 
-  mariadb:
-    image: mariadb:10.3
-    container_name: mariadb
-    restart: always
-    volumes:
-      - type: volume
-        source: mariadbsock
-        target: /var/run/mysqld
-      - "mythconverg:/var/lib/mysql"
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: mythconverg
-      MYSQL_USER: mythtv
-      MYSQL_PASSWORD: mythtv
+mariadb:
+  image: mariadb:10.3
+  restart: always
+  volumes:
+    - "mariadbsock:/var/run/mysqld"
+    - "mythconverg:/var/lib/mysql"
+  ports:
+    - "3306:3306"
+  environment:
+    MYSQL_ROOT_PASSWORD: root
+    MYSQL_DATABASE: mythconverg
+    MYSQL_USER: mythtv
+    MYSQL_PASSWORD: mythtv
 
-  shepherd:
-    image: willat8/shepherd:20210601
-    container_name: shepherd
-    restart: always
-    volumes:
-      - type: volume
-        source: shepherd_output
-        target: /shepherd_output
-
-volumes:
-  mythtvconfig:
-    external: true
-  mythtvhome:
-    external: true
-  mariadbsock:
-    external: true
-  mythconverg:
-    external: true
-  shepherd_output:
-    external: true
+shepherd:
+  image: willat8/shepherd:20210601
+  restart: always
+  volumes:
+    - "shepherd_output:/shepherd_output"
 
