@@ -1,21 +1,3 @@
-zfs-healthcheck:
-  image: zfs-tools
-  restart: always
-  privileged: yes
-  pid: host
-  net: host
-  ipc: host
-  volumes:
-    - /mnt:/mnt:shared
-    - /media:/media:shared
-    - /dev:/host/dev
-    - /run:/run
-  entrypoint: ["python", "-c"]
-  command: ["import subprocess, BaseHTTPServer; BaseHTTPServer.HTTPServer(('', 80), type('handler', (BaseHTTPServer.BaseHTTPRequestHandler, object), {'do_GET': lambda s: (s.send_response(200), s.send_header('Content-Type', 'text/plain'), s.end_headers(), s.wfile.write(subprocess.check_output(['zpool', 'status', '-x'])))})).serve_forever()"]
-  labels:
-    io.rancher.os.scope: system
-    io.rancher.os.after: mythtv
-
 mythtv:
   image: willat8/mythtv:20210601
   restart: always
@@ -25,7 +7,7 @@ mythtv:
   volumes:
     - "mythtvconfig:/etc/mythtv"
     - "mythtvhome:/root/.mythtv"
-    - "/mnt/mythtvzpool:/mnt/storage"
+    - "/mnt/mythtvdisk:/mnt/storage"
   net: host
   labels:
     io.rancher.os.after: mariadb,shepherd
