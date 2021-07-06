@@ -1,5 +1,5 @@
 mythtv:
-  image: willat8/mythtv:20210601
+  image: willat8/mythtv:20210706
   restart: always
   volumes_from:
     - mariadb
@@ -27,7 +27,7 @@ mariadb:
     MYSQL_PASSWORD: mythtv
 
 shepherd:
-  image: willat8/shepherd:20210601
+  image: willat8/shepherd:20210706
   restart: always
   volumes:
     - "shepherd_output:/shepherd_output"
