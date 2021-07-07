@@ -27,7 +27,7 @@ mariadb:
     MYSQL_PASSWORD: mythtv
 
 shepherd:
-  image: willat8/shepherd:20210706
+  image: willat8/shepherd:latest
   restart: always
   volumes:
     - "shepherd_output:/shepherd_output"
