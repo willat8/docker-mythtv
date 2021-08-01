@@ -12,7 +12,7 @@ Run `mythtv-setup` in an `ssh -X` session with
                --net=host \
                -v /tmp/.X11-unix:/tmp/.X11-unix \
                -v /home/will/.Xauthority:/root/.Xauthority \
-               -v /mnt/mythtvzpool:/mnt/storage \
+               -v /mnt/mythtvdisk:/mnt/storage \
                -e DISPLAY=$DISPLAY \
       willat8/mythtv:20210706
 
@@ -26,6 +26,6 @@ Run `mythbackend` with
                --volumes-from mariadb \
                --volumes-from shepherd:ro \
                --net=host \
-               -v /mnt/mythtvzpool:/mnt/storage \
+               -v /mnt/mythtvdisk:/mnt/storage \
       willat8/mythtv:20210706
 
