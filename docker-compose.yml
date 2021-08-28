@@ -1,5 +1,5 @@
 mythtv:
-  image: willat8/mythtv:20210802
+  image: willat8/mythtv:20210829
   restart: always
   volumes_from:
     - mariadb
