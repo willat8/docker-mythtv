@@ -88,6 +88,8 @@ spec:
       containers:
       - name: test-container
         image: willat8/mythtv:20210829
+        stdin: true
+        tty: true
         command:
         - "/bin/sh"
         volumeMounts:
