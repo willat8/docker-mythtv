@@ -70,21 +70,6 @@ spec:
 
 ---
 
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: example-pvc2
-spec:
-  storageClassName: local-storage
-  volumeName: example-pv2
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-
----
-
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
