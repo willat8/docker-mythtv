@@ -70,6 +70,31 @@ spec:
 
 ---
 
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mythtv-configmap
+data:
+  config.xml: |
+    <Configuration>
+      <Database>
+        <PingHost>1</PingHost>
+        <Host>mariadb</Host>
+        <UserName>root</UserName>
+        <Password>root</Password>
+        <DatabaseName>mythconverg</DatabaseName>
+        <Port>3306</Port>
+      </Database>
+      <WakeOnLAN>
+        <Enabled>0</Enabled>
+        <SQLReconnectWaitTime>0</SQLReconnectWaitTime>
+        <SQLConnectRetry>5</SQLConnectRetry>
+        <Command>echo 'WOLsqlServerCommand not set'</Command>
+      </WakeOnLAN>
+    </Configuration>
+
+---
+
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -95,6 +120,15 @@ spec:
         volumeMounts:
         - name: local-vol
           mountPath: /usr/test-pod
+        - name: mythtv-config
+          mountPath: "/root/.mythtv"
+      volumes:
+      - name: mythtv-config
+        configMap:
+          name: mythtv-configmap
+          items:
+          - key: "config.xml"
+            path: "config.xml"
   volumeClaimTemplates:
   - metadata:
       name: local-vol
