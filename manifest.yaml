@@ -139,3 +139,32 @@ spec:
         requests:
           storage: 1Gi
 
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mythtv-service
+spec:
+  selector:
+    app: local-test
+  ports:
+    - name: mythtv
+      protocol: TCP
+      port: 6543
+      targetPort: 6543
+    - name: mythtv-web
+      protocol: TCP
+      port: 6544
+      targetPort: 6544
+    - name: mythtv-backend
+      protocol: TCP
+      port: 6549
+      targetPort: 6549
+    - name: mythtv-ssl
+      protocol: TCP
+      port: 6554
+      targetPort: 6554
+  externalIPs:
+    - 192.168.0.10
+
