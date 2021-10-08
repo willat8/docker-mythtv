@@ -1,6 +1,6 @@
 Run mariadb via
 
-    helm install mariadb bitnami/mariadb --set image.tag=10.3.31-debian-10-r49 --set primary.persistence.existingClaim=example-pvc --set auth.rootPassword=root
+    helm install mariadb bitnami/mariadb --set image.tag=10.3.31-debian-10-r49 --set primary.persistence.existingClaim=mariadb-pv-claim --set auth.rootPassword=root
 
 > &#x26a0;&#xfe0f; **The included `docker-compose.yml` is intended for use with RancherOS only**
 

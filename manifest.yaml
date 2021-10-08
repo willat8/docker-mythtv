@@ -10,16 +10,16 @@ volumeBindingMode: WaitForFirstConsumer
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: example-pv
+  name: mariadb-pv
 spec:
   capacity:
-    storage: 1Gi
+    storage: 10Gi
   volumeMode: Filesystem
   accessModes:
   - ReadWriteOnce
   storageClassName: local-storage
   local:
-    path: /media/lpv
+    path: /media/mariadb
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -34,16 +34,16 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: example-pv2
+  name: mythtv-pv
 spec:
   capacity:
-    storage: 1Gi
+    storage: 1820Gi
   volumeMode: Filesystem
   accessModes:
   - ReadWriteOnce
   storageClassName: local-storage
   local:
-    path: /media/lpv2
+    path: /media/mythtv
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -58,15 +58,15 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: example-pvc
+  name: mariadb-pv-claim
 spec:
   storageClassName: local-storage
-  volumeName: example-pv
+  volumeName: mariadb-pv
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 10Gi
 
 ---
 
@@ -98,30 +98,28 @@ data:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: local-test
+  name: mythtv
 spec:
-  serviceName: "local-service"
+  serviceName: "mythbackend"
   replicas: 1
   selector:
     matchLabels:
-      app: local-test
+      app: mythbackend
   template:
     metadata:
       labels:
-        app: local-test
+        app: mythbackend
     spec:
       containers:
-      - name: test-container
+      - name: mythbackend
         image: willat8/mythtv:20210829
-        stdin: true
-        tty: true
-        command:
-        - "/bin/sh"
         volumeMounts:
-        - name: local-vol
-          mountPath: /usr/test-pod
+        - name: mythtv-data
+          mountPath: "/mnt/storage/mythtv"
         - name: mythtv-config
           mountPath: "/root/.mythtv"
+        - name: shepherd-data
+          mountPath: "/shepherd_output"
       volumes:
       - name: mythtv-config
         configMap:
@@ -129,15 +127,18 @@ spec:
           items:
           - key: "config.xml"
             path: "config.xml"
+      - name: shepherd-data
+        persistentVolumeClaim:
+          claimName: shepherd-pv-claim
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
   volumeClaimTemplates:
   - metadata:
-      name: local-vol
+      name: mythtv-data
     spec:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName: "local-storage"
       resources:
         requests:
-          storage: 1Gi
+          storage: 1820Gi
 
