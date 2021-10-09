@@ -118,6 +118,8 @@ spec:
           mountPath: "/mnt/storage/mythtv"
         - name: mythtv-config
           mountPath: "/root/.mythtv"
+        - name: icons-config
+          mountPath: "/root/.mythtv/channels"
         - name: shepherd-data
           mountPath: "/shepherd_output"
       volumes:
@@ -127,6 +129,9 @@ spec:
           items:
           - key: "config.xml"
             path: "config.xml"
+      - name: icons-config
+        configMap:
+          name: icons-configmap
       - name: shepherd-data
         persistentVolumeClaim:
           claimName: shepherd-pv-claim
