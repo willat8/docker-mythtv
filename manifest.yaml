@@ -117,7 +117,8 @@ spec:
         - name: mythtv-data
           mountPath: "/mnt/storage/mythtv"
         - name: mythtv-config
-          mountPath: "/root/.mythtv"
+          mountPath: "/root/.mythtv/config.xml"
+          subPath: "config.xml"
         - name: icons-config
           mountPath: "/root/.mythtv/channels"
         - name: shepherd-data
