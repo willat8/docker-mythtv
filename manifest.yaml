@@ -119,10 +119,24 @@ spec:
         - name: mythtv-config
           mountPath: "/root/.mythtv/config.xml"
           subPath: "config.xml"
-        - name: icons-config
+        - name: mythtv-icons
           mountPath: "/root/.mythtv/channels"
+        - name: mythtv-artwork
+          mountPath: "/root/.mythtv/artwork"
         - name: shepherd-data
           mountPath: "/shepherd_output"
+      initContainers:
+      - name: init-mythbackend
+        image: busybox
+        volumeMounts:
+        - name: icons-config
+          mountPath: "/icons"
+        - name: mythtv-icons
+          mountPath: "/root/.mythtv/channels"
+        command:
+        - "/bin/sh"
+        - "-c"
+        - "cp /icons/* /root/.mythtv/channels"
       volumes:
       - name: mythtv-config
         configMap:
@@ -136,6 +150,8 @@ spec:
       - name: shepherd-data
         persistentVolumeClaim:
           claimName: shepherd-pv-claim
+      - name: mythtv-icons
+        emptyDir: {}
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
   volumeClaimTemplates:
@@ -147,4 +163,12 @@ spec:
       resources:
         requests:
           storage: 1820Gi
+  - metadata:
+      name: mythtv-artwork
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "nfs-storage"
+      resources:
+        requests:
+          storage: 1Gi
 
