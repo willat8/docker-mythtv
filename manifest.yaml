@@ -112,7 +112,7 @@ spec:
     spec:
       containers:
       - name: mythbackend
-        image: willat8/mythtv:20211008
+        image: willat8/mythtv:20211110
         volumeMounts:
         - name: mythtv-data
           mountPath: "/mnt/storage/mythtv"
