@@ -9,12 +9,12 @@ RUN --security=insecure apt-get update \
     locales iputils-ping mythtv-backend libhdhomerun4 libmyth-python x11-utils \
  && rm -rf /var/lib/apt/lists/*
 
-RUN --security=insecure locale-gen "en_AU.UTF-8" && \
+RUN --security=insecure locale-gen "en_GB.UTF-8" && \
     dpkg-reconfigure --frontend=noninteractive locales && \
     ln -sfv /usr/share/zoneinfo/Australia/Sydney /etc/localtime
 
-ENV LC_ALL=en_AU.UTF-8 \
-    LANG=en_AU.UTF-8
+ENV LC_ALL=en_GB.UTF-8 \
+    LANG=en_GB.UTF-8
 
 ENTRYPOINT ["mythbackend"]
 
