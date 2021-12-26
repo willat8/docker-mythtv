@@ -167,7 +167,7 @@ spec:
       name: mythtv-artwork
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "nfs-client"
+      storageClassName: "smb"
       resources:
         requests:
           storage: 1Gi
