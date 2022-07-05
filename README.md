@@ -4,8 +4,8 @@ The `icons-configmap` configmap can be generated from an `icons` directory of pn
 
 Run mythbackend via
 
-    kubectl apply -f https://bitbucket.org/willat8/docker-mythtv/raw/master/icons.yaml
-    kubectl apply -f https://bitbucket.org/willat8/docker-mythtv/raw/master/manifest.yaml
+    kubectl apply -f https://raw.githubusercontent.com/willat8/docker-mythtv/master/icons.yaml
+    kubectl apply -f https://raw.githubusercontent.com/willat8/docker-mythtv/master/manifest.yaml
 
 Then run mariadb via
 
