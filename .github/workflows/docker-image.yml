@@ -38,4 +38,4 @@ jobs:
         context: .
         platforms: linux/amd64
         push: true
-        tags: australia-southeast1-docker.pkg.dev/cloud-wilhelm/registry/docker-mythtv:latest
+        tags: australia-southeast1-docker.pkg.dev/cloud-wilhelm/registry/mythtv:latest
