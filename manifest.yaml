@@ -1,75 +1,3 @@
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: local-storage
-provisioner: kubernetes.io/no-provisioner
-volumeBindingMode: WaitForFirstConsumer
-
----
-
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: mariadb-pv
-spec:
-  capacity:
-    storage: 10Gi
-  volumeMode: Filesystem
-  accessModes:
-  - ReadWriteOnce
-  storageClassName: local-storage
-  local:
-    path: /media/mariadb
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - rancher
-
----
-
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: mythtv-pv
-spec:
-  capacity:
-    storage: 1820Gi
-  volumeMode: Filesystem
-  accessModes:
-  - ReadWriteOnce
-  storageClassName: local-storage
-  local:
-    path: /media/mythtv
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - rancher
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mariadb-pv-claim
-spec:
-  storageClassName: local-storage
-  volumeName: mariadb-pv
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
-
----
-
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -79,9 +7,9 @@ data:
     <Configuration>
       <Database>
         <PingHost>1</PingHost>
-        <Host>mariadb</Host>
-        <UserName>root</UserName>
-        <Password>root</Password>
+        <Host>mythbackend</Host>
+        <UserName>mythtv</UserName>
+        <Password>mythtv</Password>
         <DatabaseName>mythconverg</DatabaseName>
         <Port>3306</Port>
       </Database>
@@ -96,7 +24,7 @@ data:
 ---
 
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: mythtv
 spec:
@@ -110,6 +38,7 @@ spec:
       labels:
         app: mythbackend
     spec:
+      hostname: mythbackend
       containers:
       - name: mythbackend
         image: australia-southeast1-docker.pkg.dev/cloud-wilhelm/registry/mythtv:latest
@@ -152,22 +81,15 @@ spec:
           claimName: shepherd-pv-claim
       - name: mythtv-icons
         emptyDir: {}
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
   volumeClaimTemplates:
   - metadata:
       name: mythtv-data
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "local-storage"
-      resources:
-        requests:
-          storage: 1820Gi
   - metadata:
       name: mythtv-artwork
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "smb"
       resources:
         requests:
           storage: 1Gi
