@@ -5,9 +5,10 @@ metadata:
 data:
   config.xml: |
     <Configuration>
+      <LocalHostName>mythbackend</LocalHostName>
       <Database>
         <PingHost>1</PingHost>
-        <Host>mythbackend</Host>
+        <Host>mariadb</Host>
         <UserName>mythtv</UserName>
         <Password>mythtv</Password>
         <DatabaseName>mythconverg</DatabaseName>
@@ -23,12 +24,37 @@ data:
 
 ---
 
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mythtv-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1000Gi
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mythtv-artwork
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mythtv
 spec:
-  serviceName: "mythbackend"
   replicas: 1
   selector:
     matchLabels:
@@ -81,16 +107,33 @@ spec:
           claimName: shepherd-pv-claim
       - name: mythtv-icons
         emptyDir: {}
-  volumeClaimTemplates:
-  - metadata:
-      name: mythtv-data
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-  - metadata:
-      name: mythtv-artwork
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 1Gi
+      - name: mythtv-data
+        persistentVolumeClaim:
+          claimName: mythtv-data
+      - name: mythtv-artwork
+        persistentVolumeClaim:
+          claimName: mythtv-artwork
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mythbackend
+spec:
+  selector:
+    app: mythbackend
+  ports:
+    - name: mythbackend-web
+      protocol: TCP
+      port: 80
+      targetPort: 6544
+    - name: mythbackend
+      protocol: TCP
+      port: 6543
+      targetPort: 6543
+  type: LoadBalancer
+  loadBalancerIP: 192.168.0.65
 
