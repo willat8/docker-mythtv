@@ -64,7 +64,6 @@ spec:
       labels:
         app: mythbackend
     spec:
-      hostname: mythbackend
       containers:
       - name: mythbackend
         image: australia-southeast1-docker.pkg.dev/cloud-wilhelm/registry/mythtv:latest
