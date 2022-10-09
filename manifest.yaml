@@ -8,7 +8,7 @@ data:
       <LocalHostName>mythbackend</LocalHostName>
       <Database>
         <PingHost>1</PingHost>
-        <Host>mariadb</Host>
+        <Host>192.168.0.30</Host>
         <UserName>mythtv</UserName>
         <Password>mythtv</Password>
         <DatabaseName>mythconverg</DatabaseName>
