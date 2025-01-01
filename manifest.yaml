@@ -70,10 +70,8 @@ spec:
           - weight: 1
             preference:
               matchExpressions:
-              - key: node-role
-                operator: NotIn
-                values:
-                - control-plane
+              - key: node-role.kubernetes.io/control-plane
+                operator: NotExists
       containers:
       - name: mythbackend
         image: australia-southeast1-docker.pkg.dev/cloud-wilhelm/registry/mythtv:latest
