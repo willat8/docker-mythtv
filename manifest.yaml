@@ -64,14 +64,15 @@ spec:
       labels:
         app: mythbackend
     spec:
-    affinity:
-      nodeAffinity:
-        preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 1
-          preference:
-            matchExpressions:
-            - key: node-role.kubernetes.io/control-plane
-              operator: NotExists
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: node-role.kubernetes.io/control-plane
+                operator: In
+                values:
+                  - "true"
       containers:
       - name: mythbackend
         image: australia-southeast1-docker.pkg.dev/cloud-wilhelm/registry/mythtv:latest
