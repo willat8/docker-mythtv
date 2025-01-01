@@ -59,6 +59,14 @@ spec:
   selector:
     matchLabels:
       app: mythbackend
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: node-role.kubernetes.io/control-plane
+            operator: NotExists
   template:
     metadata:
       labels:
