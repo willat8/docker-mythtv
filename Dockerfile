@@ -4,7 +4,7 @@ RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends software-properties-common gpg-agent \
  && add-apt-repository -y ppa:mythbuntu/36 \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    locales iputils-ping mythtv-backend libhdhomerun5 libmyth-python x11-utils tzdata \
+    locales iputils-ping mythtv libhdhomerun5 libmyth-python x11-utils tzdata \
  && rm -rf /var/lib/apt/lists/*
 
 RUN locale-gen "en_AU.UTF-8" \
