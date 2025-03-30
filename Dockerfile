@@ -1,5 +1,5 @@
 ARG dist=oracular
-ARG packages="locales iputils-ping mythtv-backend libhdhomerun5 libmyth-python x11-utils tzdata"
+ARG packages="locales iputils-ping mythtv-backend libhdhomerun5 libmyth-python tzdata"
 
 FROM ubuntu:${dist} as packagecache
 
@@ -17,7 +17,8 @@ RUN --mount=from=packagecache,src=/var/lib/apt,dst=/var/lib/apt,rw \
     --mount=from=packagecache,src=/var/cache/apt,dst=/var/cache/apt,rw \
     --mount=from=packagecache,src=/etc/apt,dst=/etc/apt \
     --mount=from=packagecache,src=/etc/ssl/certs/ca-certificates.crt,dst=/ca-certificates.crt \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ${packages}
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ${packages} \
+ && dpkg -P --force-depends systemd systemd-sysv libpam-systemd cron-daemon-common cron dbus-bin dbus-daemon dbus-session-bus-common dbus-system-bus-common dbus-user-session dbus
 
 RUN locale-gen "en_AU.UTF-8" \
  && ln -sfv /usr/share/zoneinfo/Australia/Sydney /etc/localtime
