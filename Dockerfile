@@ -22,7 +22,7 @@ RUN --mount=from=packagecache,src=/var/lib/apt,dst=/var/lib/apt,rw \
  && dpkg -P --force-depends zenity zenity-common xterm ubuntu-mono dconf-gsettings-backend dconf-service \
  && dpkg -P --force-depends adwaita-icon-theme gtk-update-icon-cache hicolor-icon-theme humanity-icon-theme \
  && dpkg -P --force-depends fonts-dejavu-core fonts-dejavu-extra fonts-dejavu-mono fonts-dejavu fonts-droid-fallback fonts-liberation fonts-texgyre fonts-tlwg-purisa-ttf fonts-tlwg-purisa \
- && dpkg -P --force-depends default-mysql-client mysql-client-8.0 mysql-client-core-8.0 xbitmaps usbutils
+ && dpkg -P --force-depends default-mysql-client mysql-client mysql-client-core xbitmaps usbutils
 
 RUN locale-gen "en_AU.UTF-8" \
  && ln -sfv /usr/share/zoneinfo/Australia/Sydney /etc/localtime
