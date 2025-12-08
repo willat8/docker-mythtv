@@ -31,5 +31,5 @@ RUN locale-gen "en_AU.UTF-8" \
 ENV LC_ALL=en_AU.UTF-8 \
     LANG=en_AU.UTF-8
 
-ENTRYPOINT ["mythbackend"]
+ENTRYPOINT ["mythbackend", "--noupnp"]
 
