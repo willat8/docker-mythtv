@@ -1,5 +1,5 @@
 ARG dist=plucky
-ARG packages="locales iputils-ping mythtv-backend libhdhomerun5 tzdata"
+ARG packages="locales iputils-ping mythtv-backend libhdhomerun5 libmyth-python tzdata"
 
 FROM ubuntu:${dist} as packagecache
 
