@@ -146,6 +146,11 @@ spec:
       port: 6543
       targetPort: 6543
   type: LoadBalancer
-  loadBalancerIP: 192.168.1.65
   externalTrafficPolicy: Local
+  ipFamilyPolicy: RequireDualStack
+  ipFamilies:
+    - IPv4
+    - IPv6
+  annotations:
+    metallb.io/load-balancer-ip: 192.168.1.65,2401:d005:a302:b555::65
 
