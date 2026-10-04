@@ -130,7 +130,7 @@ kind: Service
 metadata:
   name: mythbackend
   annotations:
-    metallb.io/load-balancer-ip: 192.168.1.65,2401:d005:a302:b555::65
+    metallb.io/load-balancer-ip: 192.168.1.65,fd43:9999::65
 spec:
   selector:
     app: mythbackend
