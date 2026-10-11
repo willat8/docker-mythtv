@@ -130,7 +130,7 @@ kind: Service
 metadata:
   name: mythbackend
   annotations:
-    metallb.io/loadBalancerIPs: 192.168.1.65,fd43:9999::65
+    metallb.io/loadBalancerIPs: fd43:9999::65,192.168.1.65
 spec:
   selector:
     app: mythbackend
@@ -151,6 +151,6 @@ spec:
   externalTrafficPolicy: Local
   ipFamilyPolicy: RequireDualStack
   ipFamilies:
-    - IPv4
     - IPv6
+    - IPv4
 
