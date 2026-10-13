@@ -5,7 +5,7 @@ FROM ubuntu:${dist} as packagecache
 
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends software-properties-common gpg-agent \
- && add-apt-repository -y ppa:willat8/mythtv \
+ && add-apt-repository -y ppa:mythbuntu/37 \
  && apt-get install -y --no-install-recommends --download-only ${packages} \
  && echo 'Acquire::https {\n        CaInfo "/ca-certificates.crt";\n}' > /etc/apt/apt.conf.d/customcacertificates
 
